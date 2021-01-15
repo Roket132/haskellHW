@@ -39,19 +39,21 @@ f7_1 :: Int -> Int -> Int
 f7_1 m n | m == 0 = (+) n 1
          | m > 0 && n == 0 = f7_1 (m - 1) (1)
          | m > 0 && n > 0 = f7_1 (m - 1) (f7_1 m $ n - 1)
+         | otherwise = 0
 
 f8_1 :: Int -> Int -> Integer
 f8_1 m n | m == 0 = toInteger $ (+) n 1
          | m > 0 && n == 0 = toInteger $ f7_1 (m - 1) (1)
          | m > 0 && n > 0 = toInteger $ f7_1 (m - 1) (f7_1 m $ n - 1)
+         | otherwise = 0
 
 f10_1 :: Double -> Double -> (Double, Double)
 f10_1 n m = let 
     intPart :: Double -> Double -> Double
-    intPart a b | a > 0 && b > 0 = fromIntegral $ truncate $ (/) a b
-                | a < 0 && b > 0 = fromIntegral $ ((-1) *) $ ceiling $ ( / b) $ abs a
-                | a > 0 && b < 0 = fromIntegral $ ((-1) *) $ truncate $ (a / ) $ abs b
-                | a < 0 && b < 0 = fromIntegral $ ceiling $ ((/) $ abs a) $ abs b
+    intPart a b | a > 0 && b > 0 = fromInteger $ truncate $ (/) a b
+                | a < 0 && b > 0 = fromInteger $ ((-1) *) $ ceiling $ ( / b) $ abs a
+                | a > 0 && b < 0 = fromInteger $ ((-1) *) $ truncate $ (a / ) $ abs b
+                | a < 0 && b < 0 = fromInteger $ ceiling $ ((/) $ abs a) $ abs b
                 | b == 0 = undefined
                 | otherwise = 0
     in  (intPart n m, (n - ) $ (*) m $ intPart n m)
