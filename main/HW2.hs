@@ -105,12 +105,6 @@ maybeMaybeMaybeMaybeMaybeMaybeMaybeOrNot mb a = if isJust mb
 stupidTraverse :: [Maybe a] -> Maybe [(a, a, a, a)]
 stupidTraverse list = 
     let
-        helper :: [a] -> [Maybe a] -> [a]
-        helper res [] = reverse res
-        helper res (l : list) = if isJust l 
-            then helper (fromJust l : res) list
-            else helper res list
-
         split :: [(a, a, a, a)] -> [a] -> [(a, a, a, a)]
         split res [] = reverse res
         split res (x1 : x2 : x3 : x4 : xs) =  split ((x1, x2, x3, x4) : res) xs 
@@ -119,7 +113,7 @@ stupidTraverse list =
         check' list = if length list `mod` 4 == 0  && not (length list == 0)
             then Just $ split [] list
             else Nothing
-    in check' $ helper [] list
+    in check' $ map fromJust list
 
 -- dfs
 
