@@ -57,4 +57,24 @@ antimerge list = reverse $ antimerge' [] [] list list where
                         then getCount' (res + 1) a ls
                         else getCount' res a ls
 
-    
+antiintercalate :: Eq a => [a] -> [(Int, a)]
+antiintercalate list = reverse $ helper [] (head list) 1 (tail list) where
+    helper :: Eq a => [(Int, a)] -> a -> Int -> [a] -> [(Int, a)]
+    helper res prev cnt [] = ((cnt, prev) : res)
+    helper res prev cnt (l : list) = if l == prev 
+        then helper res prev (cnt + 1) list
+        else helper ((cnt, prev) : res) l 1 list
+
+
+unpacking :: (Int, a) -> [a]
+unpacking package = unpack [] (fst package) (snd package) where
+        unpack res 0 a = res
+        unpack res cnt a = unpack (a : res) (cnt - 1) (a)
+
+antiantiintercalate :: [(Int, a)] -> [a]
+antiantiintercalate pp = 
+    let
+        helper res [] = res
+        helper res (p : ps) = helper (res ++ (unpacking p)) (ps)
+    in 
+        helper [] pp
